@@ -557,6 +557,7 @@
             html += '<div class="bg-gray-100 border-2 border-gray-300 text-gray-700 font-semibold text-center p-3 rounded-lg mb-4 relative">';
             html += '<button onclick="openAdmin()" class="absolute top-2 right-2 text-black font-black hover:bg-gray-300 px-3 py-1 rounded-lg text-2xl">⋮</button>';
             html += 'Created & Supported by:<br><span class="font-black text-gray-900">Deni Apel Jumbo</span></div>';
+            
             html += '<div class="bg-white rounded-3xl shadow-2xl p-8"><div class="text-center mb-6">';
             html += '<div class="text-6xl mb-3">📚</div>';
             html += '<h1 class="text-2xl font-bold text-gray-900 mb-1">English Reading Assessment</h1>';
@@ -573,7 +574,14 @@
             html += '<option value="intermediate">🌿 INTERMEDIATE (Excellent ≥' + th.intermediate.excellent + '%)</option>';
             html += '<option value="advanced">🌳 ADVANCED (Excellent ≥' + th.advanced.excellent + '%)</option>';
             html += '<option value="expert">🏆 EXPERT (Excellent ≥' + th.expert.excellent + '%)</option>';
-            html += '</select></div></div>';
+            html += '</select>';
+            
+            // INFO 1: Perhatian di halaman form - dipindahkan di bawah select level
+            html += '<div class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-3 mt-2">';
+            html += '<p class="text-yellow-800 font-bold text-sm">⚠️ Perhatian: Semakin tinggi level, semakin susah mendapat nilai Excellent!</p>';
+            html += '</div>';
+            
+            html += '</div></div>';
             html += '<button onclick="handleStart()" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition">🚀 Start Assessment</button>';
             html += '</div></div></div>';
             if (state.showAdminLogin) html += renderAdminLogin();
@@ -794,6 +802,19 @@
             html += '<p class="text-base font-black text-gray-900">' + state.studentClass + '</p></div></div>';
             html += '<div class="text-center pt-3 border-t border-gray-300">';
             html += '<span class="' + getLevelColor(state.selectedLevel) + ' text-white px-3 py-1 rounded-lg font-bold text-xs">' + getLevelName(state.selectedLevel) + '</span></div></div>';
+            
+            // INFO 3: STEPS di halaman assessment
+            html += '<div class="bg-white rounded-2xl p-4 shadow-lg border-2 border-gray-300">';
+            html += '<p class="text-sm font-bold text-gray-800 mb-3">📋 STEPS:</p>';
+            html += '<ol class="text-xs text-gray-700 space-y-1 list-decimal list-inside">';
+            html += '<li>Click <span class="text-blue-600 font-bold">LISTEN</span> to hear pronunciation</li>';
+            html += '<li>Click <span class="text-green-600 font-bold">JUDGE</span> to start recording</li>';
+            html += '<li><span class="font-bold">Read the sentence</span> clearly and loudly</li>';
+            html += '<li>Wait for text to appear (green box)</li>';
+            html += '<li>Click <span class="text-blue-600 font-bold">RESULT</span> to see your score</li>';
+            html += '<li>Click <span class="text-purple-600 font-bold">NEXT</span> for next mission</li>';
+            html += '</ol></div>';
+            
             html += '<button onclick="testMic()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 px-4 rounded-2xl font-black text-base hover:from-green-600 hover:to-blue-600 shadow-lg flex items-center justify-center gap-2"><span class="text-2xl">🎤</span> TEST MICROPHONE</button>';
             html += '<div class="bg-white rounded-3xl shadow-2xl p-5"><div class="text-center mb-4">';
             html += '<div class="flex items-center justify-center gap-2 mb-2"><span class="text-3xl">📚</span>';
@@ -811,18 +832,21 @@
                 html += '<div class="text-5xl mb-2">🎤</div><p class="text-red-800 font-black text-lg">RECORDING...</p></div>';
             }
             if (state.transcript) {
+                // INFO 2: Click RESULT to get score
                 html += '<div class="bg-green-50 border-2 border-green-500 rounded-2xl p-4 mb-4">';
                 html += '<p class="text-xs text-green-700 font-bold mb-2">✅ YOUR RECORDING:</p>';
-                html += '<p class="text-sm text-gray-900 font-semibold italic">"' + state.transcript + '"</p></div>';
+                html += '<p class="text-sm text-gray-900 font-semibold italic mb-3">"' + state.transcript + '"</p>';
+                html += '<p class="text-yellow-700 font-bold text-xs">👉 Click RESULT to get score</p>';
+                html += '</div>';
             }
             if (state.showResult && cs) {
                 html += '<div class="rounded-2xl p-5 mb-4 text-center border-4 shadow-xl ' + getScoreColor(cs) + '">';
-                html += '<div class="text-5xl mb-2">✓</div><p class="text-sm font-bold mb-1">YOUR SCORE:</p>';
+                html += '<div class="text-5xl mb-2">✔</div><p class="text-sm font-bold mb-1">YOUR SCORE:</p>';
                 html += '<p class="text-4xl font-black mb-2">' + cs + '</p></div>';
             }
             html += '<div class="grid grid-cols-3 gap-3 mb-4">';
             html += '<button onclick="handleJudge()"' + (state.isRecording ? ' disabled' : '') + ' class="bg-green-500 text-white py-4 rounded-2xl font-black text-sm hover:bg-green-600 disabled:bg-gray-400 shadow-lg transition transform hover:scale-105"><div class="text-2xl mb-1">🎤</div>JUDGE</button>';
-            html += '<button onclick="handleResult()"' + (!state.transcript || state.isRecording ? ' disabled' : '') + ' class="bg-blue-500 text-white py-4 rounded-2xl font-black text-sm hover:bg-blue-600 disabled:bg-gray-400 shadow-lg transition transform hover:scale-105"><div class="text-2xl mb-1">✓</div>RESULT</button>';
+            html += '<button onclick="handleResult()"' + (!state.transcript || state.isRecording ? ' disabled' : '') + ' class="bg-blue-500 text-white py-4 rounded-2xl font-black text-sm hover:bg-blue-600 disabled:bg-gray-400 shadow-lg transition transform hover:scale-105"><div class="text-2xl mb-1">✔</div>RESULT</button>';
             html += '<button onclick="handleNext()"' + (!cs ? ' disabled' : '') + ' class="bg-purple-500 text-white py-4 rounded-2xl font-black text-sm hover:bg-purple-600 disabled:bg-gray-400 shadow-lg transition transform hover:scale-105"><div class="text-2xl mb-1">→</div>' + (state.currentMission < total - 1 ? 'NEXT' : 'FINISH') + '</button></div>';
             html += '<div class="flex justify-center gap-2 flex-wrap">';
             missions.forEach((_, idx) => {
