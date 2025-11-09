@@ -305,6 +305,21 @@
             state.missionScores = [];
             render();
         }
+        
+        function exitToHome() {
+            if (confirm('⚠️ Keluar dari Reading Test?\n\nProgress Anda akan hilang!')) {
+                state.showForm = true; 
+                state.showFinalScore = false; 
+                state.currentMission = 0; 
+                state.transcript = ''; 
+                state.showResult = false; 
+                state.missionScores = [];
+                state.studentName = '';
+                state.studentClass = '';
+                state.selectedLevel = '';
+                render();
+            }
+        }
 
         function openAdmin() { 
             state.showAdminLogin = true; 
@@ -800,8 +815,10 @@
             html += '<p class="text-base font-black text-gray-900 truncate">' + state.studentName + '</p></div>';
             html += '<div class="pl-3"><p class="text-xs text-gray-500 font-bold mb-1">CLASS</p>';
             html += '<p class="text-base font-black text-gray-900">' + state.studentClass + '</p></div></div>';
-            html += '<div class="text-center pt-3 border-t border-gray-300">';
-            html += '<span class="' + getLevelColor(state.selectedLevel) + ' text-white px-3 py-1 rounded-lg font-bold text-xs">' + getLevelName(state.selectedLevel) + '</span></div></div>';
+            html += '<div class="flex justify-between items-center pt-3 border-t border-gray-300">';
+            html += '<span class="' + getLevelColor(state.selectedLevel) + ' text-white px-3 py-1 rounded-lg font-bold text-xs">' + getLevelName(state.selectedLevel) + '</span>';
+            html += '<button onclick="exitToHome()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-bold text-xs flex items-center gap-1"><span>🚪</span> OUT</button>';
+            html += '</div></div>';
             
             // INFO 3: STEPS di halaman assessment
             html += '<div class="bg-white rounded-2xl p-4 shadow-lg border-2 border-gray-300">';
